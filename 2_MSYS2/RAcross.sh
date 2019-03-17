@@ -64,12 +64,14 @@ echo "export DEVKITPPC=\$DEVKITPRO/devkitPPC" >> ${RACROSS_INITSCRIPT}
 echo "export LIBCTRU=\$DEVKITPRO/libctru" >> ${RACROSS_INITSCRIPT}
 echo "export LIBOGC=\$DEVKITPRO/libogc" >> ${RACROSS_INITSCRIPT}
 echo "export LIBNX=\$DEVKITPRO/libnx" >> ${RACROSS_INITSCRIPT}
-wget https://downloads.devkitpro.org/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
-pacman -U ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
 echo "[dkp-libs]" >> /etc/pacman.conf
+echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
 echo "Server = https://downloads.devkitpro.org/packages" >> /etc/pacman.conf
 echo "[dkp-windows]" >> /etc/pacman.conf
+echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
 echo "Server = https://downloads.devkitpro.org/packages/windows" >> /etc/pacman.conf
+wget https://downloads.devkitpro.org/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
+pacman -U --noconfirm ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
 pacman -Syu --noconfirm
 pacman -S --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
 fi
@@ -100,6 +102,9 @@ tar Jcvf ${RACROSS_CACHE}/libretro-super.tar.xz libretro-super
 
 # build scripts
 cp ${RACROSS_BASE}/build-core.sh ~/libretro-super
+
+# delete RAcross installer
+rm -rf ${RACROSS_BASE}
 
 echo "*****************************************"
 echo "RAcross setup is finished. please reboot."

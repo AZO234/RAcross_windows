@@ -31,6 +31,10 @@ $cli.DownloadFile("http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20180531.ex
 #Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -ArgumentList "--platform minimal --script $RACROSS_WPS_CACHEBASE\auto-install.js -v" -Wait
 Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -Wait
 
+# delete RAcross installer
+Remove-Item "$RACROSS_WPS_CACHEBASE" -Recurse
+Remove-Item "$RACROSS_BASE" -Recurse -Force
+
 # copy MSYS2 files
 sl_wps_base
 "copy MSYS2 files ..."
