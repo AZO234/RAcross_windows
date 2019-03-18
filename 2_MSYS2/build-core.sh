@@ -2,6 +2,7 @@
 
 BUILD_PS3=0
 BUILD_DEVKIT=0
+BUILD_ANDROID=0
 
 LR_CORE=np2kai
 LR_CORE_SRC=~/NP2kai
@@ -184,6 +185,20 @@ fi
 ./libretro-build-msvc2017_arm_uwp.sh ${LR_CORE}
 echo "=== MSVC2017 ARM UWP - build end ==="
 mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_arm_uwp.log
+
+# android-mk
+if [ ${BUILD_ANDROID} = 1 ] ; then
+	rm -rf libretro-${LR_CORE}
+	echo "=== android-mk - build start ==="
+	if [ ${SRCFETCH} = 1 ] ; then
+	./libretro-fetch.sh ${LR_CORE}
+	else
+	cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
+	fi
+	./libretro-build-android-mk.sh ${LR_CORE}
+	echo "=== android-mk - build end ==="
+	mv log/${LR_CORE}.log log/${LR_CORE}_android.log
+fi
 
 unset CC
 unset CXX

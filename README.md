@@ -35,13 +35,16 @@ install
 		- All default click "Next"
 		- final dialog, check clear "run MSYS2 64bit" then "Finish"
 
-	5. MSYS2 shell opened and setuped
+	5. MinGW setup window displaied
+
+		- select "mingw32-base-bin" and "mingw32-gcc-g++-bin", then "Apply Changes"
+
+	6. MSYS2 shell opened and setuped
 
 		- package update
 		- packages
-		- MinGW
 
-	6. "RAcross setup is finished." displaied then keydown and close PowerShell
+	7. "RAcross setup is finished." displaied then keydown and close PowerShell
 
 usage
 -----

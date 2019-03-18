@@ -1,13 +1,17 @@
 #!/usr/bin/bash
 
-SETUP_DEVKITPRO=0
 SETUP_PS3=0
+SETUP_DEVKITPRO=0
+SETUP_ANDROID=0
 
 export RACROSS_BASE=${HOME}/RAcross
 
 export RACROSS_CACHE=${RACROSS_BASE}/cache
-rm -rf ${RACROSS_CACHE}
-mkdir -p ${RACROSS_CACHE}
+if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+	echo "*** restructure cache ***"
+	rm -rf ${RACROSS_CACHE}
+	mkdir -p ${RACROSS_CACHE}
+fi
 
 export RACROSS_TOOLS=${HOME}/RAcross-tools
 rm -rf ${RACROSS_TOOLS}
@@ -15,96 +19,117 @@ mkdir -p ${RACROSS_TOOLS}
 
 export RACROSS_INITSCRIPT=~/.bashrc
 
-RACROSS_NPROC=`nproc`
-if test ${RACROSS_NPROC} -gt 1 ; then
-export MAKEFLAGS=-j${RACROSS_NPROC} ${MAKEFLAGS}
-fi
-
 cd ~/RAcross
 
-pacman -Syu --noconfirm
-pacman -S --noconfirm make git unzip patch
+if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+	pacman -S --noconfirm make unzip patch
+elif [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+	pacman -Syu --noconfirm
+	pacman -S --noconfirm git
+	pacman -Sw --noconfirm make unzip patch
+fi
 
 # MinGW
-echo "*** setup MinGW ***"
-cd ${RACROSS_BASE}
-wget "https://jaist.dl.osdn.jp/mingw/70619/binutils-2.32-1-mingw32-bin.tar.xz" -O ${RACROSS_CACHE}/binutils-mingw32-bin.tar.xz
-wget "https://jaist.dl.osdn.jp/mingw/69950/gcc-core-8.2.0-3-mingw32-bin.tar.xz" -O ${RACROSS_CACHE}/gcc-core-mingw32-bin.tar.xz
-wget "https://jaist.dl.osdn.jp/mingw/69944/gcc-c++-8.2.0-3-mingw32-bin.tar.xz" -O ${RACROSS_CACHE}/gcc-c++-mingw32-bin.tar.xz
-wget "https://jaist.dl.osdn.jp/mingw/69303/pthreads-GC-w32-2.10-mingw32-pre-20160821-1-dev.tar.xz" -O ${RACROSS_CACHE}/pthreads-GC-w32-mingw32-bin.tar.xz
-mkdir MinGW
-cd MinGW
-#tar Jxfv ${RACROSS_CACHE}/binutils-mingw32-bin.tar.xz
-#tar Jxfv ${RACROSS_CACHE}/gcc-core-mingw32-bin.tar.xz
-#tar Jxfv ${RACROSS_CACHE}/gcc-c++-mingw32-bin.tar.xz
-#tar Jxfv ${RACROSS_CACHE}/pthreads-GC-w32-mingw32-bin.tar.xz
-xz -dc ${RACROSS_CACHE}/binutils-mingw32-bin.tar.xz | tar xfv -
-xz -dc ${RACROSS_CACHE}/gcc-core-mingw32-bin.tar.xz | tar xfv -
-xz -dc ${RACROSS_CACHE}/gcc-c++-mingw32-bin.tar.xz | tar xfv -
-xz -dc ${RACROSS_CACHE}/pthreads-GC-w32-mingw32-bin.tar.xz | tar xfv -
-cp -rf * /usr/
-cd ..
-rm -rf MingGW
+if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+	export PATH=$PATH:/c/MinGW/bin
+	echo "export PATH=\$PATH::/c/MinGW/bin" >> ${RACROSS_INITSCRIPT}
+fi
 
 # devkitPro
 if [ ${SETUP_DEVKITPRO} = 1 ] ; then
-echo "*** setup devkitPro ***"
-cd ${RACROSS_BASE}
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=$DEVKITPRO/devkitARM
-export DEVKITA64=$DEVKITPRO/devkitA64
-export DEVKITPPC=$DEVKITPRO/devkitPPC
-export LIBCTRU=$DEVKITPRO/libctru
-export LIBOGC=$DEVKITPRO/libogc
-export LIBNX=$DEVKITPRO/libnx
-echo "export DEVKITPRO=/opt/devkitpro" >> ~/.bashrc
-echo "export DEVKITARM=\$DEVKITPRO/devkitARM" >> ${RACROSS_INITSCRIPT}
-echo "export DEVKITA64=\$DEVKITPRO/devkitA64" >> ${RACROSS_INITSCRIPT}
-echo "export DEVKITPPC=\$DEVKITPRO/devkitPPC" >> ${RACROSS_INITSCRIPT}
-echo "export LIBCTRU=\$DEVKITPRO/libctru" >> ${RACROSS_INITSCRIPT}
-echo "export LIBOGC=\$DEVKITPRO/libogc" >> ${RACROSS_INITSCRIPT}
-echo "export LIBNX=\$DEVKITPRO/libnx" >> ${RACROSS_INITSCRIPT}
-echo "[dkp-libs]" >> /etc/pacman.conf
-echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-echo "Server = https://downloads.devkitpro.org/packages" >> /etc/pacman.conf
-echo "[dkp-windows]" >> /etc/pacman.conf
-echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-echo "Server = https://downloads.devkitpro.org/packages/windows" >> /etc/pacman.conf
-wget https://downloads.devkitpro.org/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
-pacman -U --noconfirm ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
-pacman -Syu --noconfirm
-pacman -S --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
+	echo "*** setup devkitPro ***"
+	cd ${RACROSS_BASE}
+	export DEVKITPRO=/opt/devkitpro
+	export DEVKITARM=$DEVKITPRO/devkitARM
+	export DEVKITA64=$DEVKITPRO/devkitA64
+	export DEVKITPPC=$DEVKITPRO/devkitPPC
+	export LIBCTRU=$DEVKITPRO/libctru
+	export LIBOGC=$DEVKITPRO/libogc
+	export LIBNX=$DEVKITPRO/libnx
+	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+		echo "[dkp-libs]" >> /etc/pacman.conf
+		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+		echo "Server = https://downloads.devkitpro.org/packages" >> /etc/pacman.conf
+		echo "[dkp-windows]" >> /etc/pacman.conf
+		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+		echo "Server = https://downloads.devkitpro.org/packages/windows" >> /etc/pacman.conf
+		wget https://downloads.devkitpro.org/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz -P ${RACROSS_CACHE}
+		pacman -U --noconfirm ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
+		pacman -Syuw --noconfirm
+		pacman -Sw --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
+	fi
+	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+		echo "export DEVKITPRO=/opt/devkitpro" >> ${RACROSS_INITSCRIPT}
+		echo "export DEVKITARM=\$DEVKITPRO/devkitARM" >> ${RACROSS_INITSCRIPT}
+		echo "export DEVKITA64=\$DEVKITPRO/devkitA64" >> ${RACROSS_INITSCRIPT}
+		echo "export DEVKITPPC=\$DEVKITPRO/devkitPPC" >> ${RACROSS_INITSCRIPT}
+		echo "export LIBCTRU=\$DEVKITPRO/libctru" >> ${RACROSS_INITSCRIPT}
+		echo "export LIBOGC=\$DEVKITPRO/libogc" >> ${RACROSS_INITSCRIPT}
+		echo "export LIBNX=\$DEVKITPRO/libnx" >> ${RACROSS_INITSCRIPT}
+		pacman -Syu --noconfirm
+		pacman -S --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
+	fi
 fi
 
 # PS3
 if [ ${SETUP_PS3} = 1 ] ; then
-echo "*** setup PS3 ***"
-cd ${RACROSS_BASE}
-unzip PS3_SDK-475_001.zip
-unzip PS3_Toolchain_411-Win_420_001.zip -d cell1
-unzip SNCPPUToolchainforPlayStation3v470.1.zip -d cell2
-cp -rf cell1/cell/* cell/
-rm -rf cell1
-cp -rf cell2/cell/* cell/
-rm -rf cell2
-mv cell ${RACROSS_TOOLS}/
-export CELL_SDK=${RACROSS_TOOLS}/cell
-export PATH=$PATH:$CELL_SDK/host-win32/ppu/bin:$CELL_SDK/host-win32/spu/bin:$CELL_SDK/host-win32/sn/bin
-echo "export CELL_SDK=${RACROSS_TOOLS}/cell" >> ${RACROSS_INITSCRIPT}
-echo "export PATH=\$PATH:\$CELL_SDK/host-win32/ppu/bin:\$CELL_SDK/host-win32/spu/bin:\$CELL_SDK/host-win32/sn/bin" >> ${RACROSS_INITSCRIPT}
+	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+		echo "*** setup PS3 ***"
+		cd ${RACROSS_BASE}
+		unzip PS3_SDK-475_001.zip
+		unzip PS3_Toolchain_411-Win_420_001.zip -d cell1
+		unzip SNCPPUToolchainforPlayStation3v470.1.zip -d cell2
+		cp -rf cell1/cell/* cell/
+		rm -rf cell1
+		cp -rf cell2/cell/* cell/
+		rm -rf cell2
+		mv cell ${RACROSS_TOOLS}/
+		export CELL_SDK=${RACROSS_TOOLS}/cell
+		export PATH=$PATH:$CELL_SDK/host-win32/ppu/bin:$CELL_SDK/host-win32/spu/bin:$CELL_SDK/host-win32/sn/bin
+		echo "export CELL_SDK=${RACROSS_TOOLS}/cell" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:\$CELL_SDK/host-win32/ppu/bin:\$CELL_SDK/host-win32/spu/bin:\$CELL_SDK/host-win32/sn/bin" >> ${RACROSS_INITSCRIPT}
+	fi
+fi
+
+# Android NDK *.cmd file cannot run*
+if [ ${SETUP_ANDROID} = 1 ] ; then
+	echo "*** setup Android NDK ***"
+	cd ${RACROSS_BASE}
+	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+		wget https://dl.google.com/android/repository/android-ndk-r18b-windows-x86_64.zip -P ${RACROSS_CACHE}
+	fi
+	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+		unzip ${RACROSS_CACHE}/android-ndk-r18b-windows-x86_64.zip -d ${RACROSS_TOOLS}/
+		export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r18b
+		export PATH=$PATH:${RACROSS_TOOLS}/android-ndk-r18b
+		echo "export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r18b" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:${RACROSS_TOOLS}/android-ndk-r18b" >> ${RACROSS_INITSCRIPT}
+	fi
 fi
 
 # libretro-super
 echo "*** setup libretro-super ***"
 cd ~
-git clone --depth=1 https://github.com/libretro/libretro-super.git
-tar Jcvf ${RACROSS_CACHE}/libretro-super.tar.xz libretro-super
+if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+	git clone --depth=1 https://github.com/libretro/libretro-super.git
+	tar zcvf ${RACROSS_CACHE}/libretro-super.tar.gz libretro-super
+	if [ ${RACROSS_SETUP_INSTALL} = 0 ] ; then
+		rm -rf libretro-super
+	fi
+fi
+if [ ${RACROSS_SETUP_CACHE} = 0 ] ; then
+	tar zxfv ${RACROSS_CACHE}/libretro-super.tar.gz
+fi
 
 # build scripts
-cp ${RACROSS_BASE}/build-core.sh ~/libretro-super
+if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+	cp ${RACROSS_BASE}/build-core.sh ~/libretro-super
+fi
 
 # delete RAcross installer
-rm -rf ${RACROSS_BASE}
+if [ ${RACROSS_SETUP_DELETE} = 1 ] ; then
+	rm -rf ${RACROSS_BASE}
+fi
 
 echo "*****************************************"
 echo "RAcross setup is finished. please reboot."
