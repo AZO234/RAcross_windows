@@ -25,8 +25,8 @@ if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
 	pacman -S --noconfirm git make unzip patch
 elif [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
 	pacman -Syu --noconfirm
-	pacman -S --noconfirm git
-	pacman -Sw --noconfirm make unzip patch
+	pacman -S --noconfirm git patch
+	pacman -Sw --noconfirm make unzip
 fi
 
 # MinGW
@@ -112,6 +112,8 @@ echo "*** setup libretro-super ***"
 cd ~
 if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
 	git clone --depth=1 https://github.com/libretro/libretro-super.git
+	patch -p1 -d libretro-super < ${RACROSS_BASE}/libretro-super.patch
+	chmod +x libretro-super/libretro-build-libnx.sh
 	tar zcvf ${RACROSS_CACHE}/libretro-super.tar.gz libretro-super
 	if [ ${RACROSS_SETUP_INSTALL} = 0 ] ; then
 		rm -rf libretro-super
