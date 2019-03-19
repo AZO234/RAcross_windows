@@ -22,7 +22,7 @@ export RACROSS_INITSCRIPT=~/.bashrc
 cd ~/RAcross
 
 if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
-	pacman -S --noconfirm make unzip patch
+	pacman -S --noconfirm git make unzip patch
 elif [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm git
