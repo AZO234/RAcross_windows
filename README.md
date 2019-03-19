@@ -37,7 +37,9 @@ install
 
 	5. MinGW setup window displaied
 
-		- select "mingw32-base-bin" and "mingw32-gcc-g++-bin", then "Apply Changes"
+		- select "mingw32-base-bin" and "mingw32-gcc-g++-bin", of "Basic setup"
+		- select "mingw32-libpthreadgc-dev", of "All Packages"
+		- then "Apply Changes"
 
 	6. MSYS2 shell opened and setuped
 
