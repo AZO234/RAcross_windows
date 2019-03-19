@@ -46,6 +46,9 @@ if [ ${SETUP_DEVKITPRO} = 1 ] ; then
 	export LIBCTRU=$DEVKITPRO/libctru
 	export LIBOGC=$DEVKITPRO/libogc
 	export LIBNX=$DEVKITPRO/libnx
+	export PATH=$PATH:$DEVKITPRO/devkitARM/bin
+	export PATH=$PATH:$DEVKITPRO/devkitA64/bin
+	export PATH=$PATH:$DEVKITPRO/devkitPPC/bin
 	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
 		echo "[dkp-libs]" >> /etc/pacman.conf
 		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
@@ -66,6 +69,9 @@ if [ ${SETUP_DEVKITPRO} = 1 ] ; then
 		echo "export LIBCTRU=\$DEVKITPRO/libctru" >> ${RACROSS_INITSCRIPT}
 		echo "export LIBOGC=\$DEVKITPRO/libogc" >> ${RACROSS_INITSCRIPT}
 		echo "export LIBNX=\$DEVKITPRO/libnx" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:\$DEVKITPRO/devkitARM/bin" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:\$DEVKITPRO/devkitA64/bin" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:\$DEVKITPRO/devkitPPC/bin" >> ${RACROSS_INITSCRIPT}
 		pacman -Syu --noconfirm
 		pacman -S --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
 	fi
