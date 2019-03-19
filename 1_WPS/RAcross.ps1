@@ -79,12 +79,6 @@ if($env:RACROSS_SETUP_INSTALL -eq 1) {
 	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\mingw-get-setup.exe" -Wait
 }
 
-# delete RAcross installer
-if($env:RACROSS_SETUP_DELETE -eq 1) {
-#	Remove-Item "$RACROSS_BASE" -Recurse -Force
-	Remove-Item "$RACROSS_BASE\*" -Recurse -Force
-}
-
 # copy MSYS2 files
 sl_wps_base
 if($MSYS_INSTALLED -eq 0) {
@@ -94,6 +88,13 @@ if($MSYS_INSTALLED -eq 0) {
 	"update MSYS2 ..."
 	Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw32 -c `"pacman -Syu --noconfirm`"" -Wait
 }
+
+# delete RAcross installer
+if($env:RACROSS_SETUP_DELETE -eq 1) {
+#	Remove-Item "$RACROSS_BASE" -Recurse -Force
+	Remove-Item "$RACROSS_BASE\*" -Recurse -Force
+}
+
 # 2nd start MSYS2
 "setup MSYS2 env ..."
 Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw32 -c `"RAcross/RAcross.sh`"" -Wait
