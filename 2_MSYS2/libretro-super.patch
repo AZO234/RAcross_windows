@@ -1,6 +1,61 @@
+バイナリーファイル libretro-super/.git/index とlibretro-super_/.git/index は異なります
+diff -uprN libretro-super/libretro-build-android-mk.sh libretro-super_/libretro-build-android-mk.sh
+--- libretro-super/libretro-build-android-mk.sh	2019-03-20 13:41:48.496938572 +0900
++++ libretro-super_/libretro-build-android-mk.sh	2019-03-20 18:29:41.834818000 +0900
+@@ -44,6 +44,13 @@ die()
+ # $3 is appendage to core name for output JNI file
+ build_libretro_generic_makefile()
+ {
++	CMD_EXT=""
++	case "$(uname)" in
++		win|*mingw32*|*MINGW32*|*MSYS_NT*|win64|*mingw64*|*MINGW64*)
++			CMD_EXT=".cmd"
++			;;
++	esac
++
+ 	cd $BASE_DIR
+ 	if [ -d "libretro-${1}" ]; then
+ 		echo "=== Building ${1} ==="
+@@ -51,9 +58,9 @@ build_libretro_generic_makefile()
+ 		cd ${2}
+ 		for a in "${ABIS[@]}"; do
+ 			if [ -z "${NOCLEAN}" ]; then
+-				ndk-build clean APP_ABI=${a} || die "Failed to clean ${a} ${1}"
++				ndk-build${CMD_EXT} clean APP_ABI=${a} || die "Failed to clean ${a} ${1}"
+ 			fi
+-			ndk-build -j$JOBS APP_ABI=${a} || die "Failed to build  ${a} ${1}"
++			ndk-build${CMD_EXT} -j$JOBS APP_ABI=${a} || die "Failed to build  ${a} ${1}"
+ 			cp ../libs/${a}/libretro${3}.${FORMAT_EXT} $RARCH_DIST_DIR/${a}/${1}_libretro${FORMAT}.${FORMAT_EXT}
+ 		done
+ 	else
+@@ -64,15 +71,22 @@ build_libretro_generic_makefile()
+ #same as above for armv7 with neon since android ndk does not see it as as its own architecture
+ build_libretro_generic_makefile_armv7neon()
+ {
++	CMD_EXT=""
++	case "$(uname)" in
++		win|*mingw32*|*MINGW32*|*MSYS_NT*|win64|*mingw64*|*MINGW64*)
++			CMD_EXT=".cmd"
++			;;
++	esac
++
+ 	cd $BASE_DIR
+ 	if [ -d "libretro-${1}" ]; then
+ 		echo "=== Attempting armv7-neon Build ==="
+ 		cd libretro-${1}
+ 		cd ${2}
+       if [ -z "${NOCLEAN}" ]; then
+-         ndk-build clean APP_ABI="armeabi-v7a" NDK_OUT="../obj/local/armeabi-v7a-neon" NDK_LIBS_OUT="../libs/armeabi-v7a-neon" V7NEONOPTIMIZATION="1" || die "Failed to clean armeabi_v7a_neon ${1}"
++         ndk-build${CMD_EXT} clean APP_ABI="armeabi-v7a" NDK_OUT="../obj/local/armeabi-v7a-neon" NDK_LIBS_OUT="../libs/armeabi-v7a-neon" V7NEONOPTIMIZATION="1" || die "Failed to clean armeabi_v7a_neon ${1}"
+       fi
+-      ndk-build -j$JOBS APP_ABI="armeabi-v7a" NDK_OUT="../obj/local/armeabi-v7a-neon" NDK_LIBS_OUT="../libs/armeabi-v7a-neon" V7NEONOPTIMIZATION="1" || die "Failed to build armeabi_v7a_neon ${1}"
++      ndk-build${CMD_EXT} -j$JOBS APP_ABI="armeabi-v7a" NDK_OUT="../obj/local/armeabi-v7a-neon" NDK_LIBS_OUT="../libs/armeabi-v7a-neon" V7NEONOPTIMIZATION="1" || die "Failed to build armeabi_v7a_neon ${1}"
+       mkdir -p $RARCH_DIST_DIR/armeabi-v7a-neon
+       cp ../libs/armeabi-v7a-neon/armeabi-v7a/libretro${3}.${FORMAT_EXT} $RARCH_DIST_DIR/armeabi-v7a-neon/${1}_libretro${FORMAT}.${FORMAT_EXT}
+ 	else
 diff -uprN libretro-super/libretro-build-libnx.sh libretro-super_/libretro-build-libnx.sh
 --- libretro-super/libretro-build-libnx.sh	1970-01-01 09:00:00.000000000 +0900
-+++ libretro-super_/libretro-build-libnx.sh	2019-03-20 06:35:21.600298900 +0900
++++ libretro-super_/libretro-build-libnx.sh	2019-03-20 13:59:17.784218965 +0900
 @@ -0,0 +1,17 @@
 +#! /usr/bin/env bash
 +# vim: set ts=3 sw=3 noet ft=sh : bash
@@ -20,8 +75,47 @@ diff -uprN libretro-super/libretro-build-libnx.sh libretro-super_/libretro-build
 +
 +platform=libnx ${BASE_DIR}/libretro-build.sh $@
 diff -uprN libretro-super/libretro-config.sh libretro-super_/libretro-config.sh
---- libretro-super/libretro-config.sh	2019-03-20 06:51:19.098789600 +0900
-+++ libretro-super_/libretro-config.sh	2019-03-20 06:54:51.895701300 +0900
+--- libretro-super/libretro-config.sh	2019-03-20 13:41:48.500938556 +0900
++++ libretro-super_/libretro-config.sh	2019-03-20 18:32:22.967937082 +0900
+@@ -305,9 +305,9 @@ case "$platform" in
+ 				;;
+ 		esac
+ 		export NDK_ROOT_DIR
+-		CC="$NDK_ROOT_DIR/toolchains/x86-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-gcc"
+-		CXX="$NDK_ROOT_DIR/toolchains/x86-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-g++"
+-		CXX11="$NDK_ROOT_DIR/toolchains/x86-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-g++"
++		CC="$NDK_ROOT_DIR/toolchains/x86-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-gcc"
++		CXX="$NDK_ROOT_DIR/toolchains/x86-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-g++"
++		CXX11="$NDK_ROOT_DIR/toolchains/x86-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/i686-linux-android-g++"
+ 		;;
+ 
+    android-armeabi)
+@@ -333,9 +333,9 @@ case "$platform" in
+ 				;;
+ 		esac
+ 		export NDK_ROOT_DIR
+-		CC="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-gcc"
+-		CXX="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
+-		CXX11="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
++		CC="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-gcc"
++		CXX="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
++		CXX11="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
+ 		;;
+ 
+    android-armeabi_v7a)
+@@ -361,9 +361,9 @@ case "$platform" in
+ 				;;
+ 		esac
+ 		export NDK_ROOT_DIR
+-		CC="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-gcc"
+-		CXX="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
+-		CXX11="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.8/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
++		CC="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-gcc"
++		CXX="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
++		CXX11="$NDK_ROOT_DIR/toolchains/arm-linux-androideabi-4.9/prebuilt/${HOST_PLATFORM}-x86_64/bin/arm-linux-androideabi-g++"
+ 		;;
+ 
+    android-arm64_v8a)
 @@ -600,6 +600,9 @@ case "$platform" in
  		FORMAT_COMPILER_TARGET_ALT=libnx
  		FORMAT=_libnx
@@ -45,4 +139,3 @@ diff -uprN libretro-super/libretro-config.sh libretro-super_/libretro-config.sh
  				android-x86_64)
  					platform=android-x86_64
  					FORMAT_EXT="so"
-
