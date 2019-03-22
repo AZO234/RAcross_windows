@@ -7,9 +7,14 @@ BUILD_ANDROID=0
 LR_CORE=np2kai
 LR_CORE_SRC=~/NP2kai
 
-SRCFETCH=0
+LR_DIST_CLEAN=1
+LR_SRC_FETCH=0
 
 cd ~/libretro-super
+
+if [ ${LR_DIST_CLEAN} = 1 ] ; then
+rm -rf dist/*
+fi
 
 unset CC
 unset CXX
@@ -19,7 +24,7 @@ unset LD
 # host(windows x86_64)
 rm -rf libretro-${LR_CORE}
 echo "=== host - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -32,7 +37,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_host.log
 if [ ${BUILD_PS3} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== PS3 - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -46,7 +51,7 @@ fi
 if [ ${BUILD_PS3} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== sncps3 - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -60,7 +65,7 @@ fi
 if [ ${BUILD_DEVKIT} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== CTR - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -74,7 +79,7 @@ fi
 if [ ${BUILD_DEVKIT} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== NGC - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -88,7 +93,7 @@ fi
 if [ ${BUILD_DEVKIT} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== Wii - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -102,7 +107,7 @@ fi
 if [ ${BUILD_DEVKIT} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== WiiU - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -116,7 +121,7 @@ fi
 if [ ${BUILD_DEVKIT} = 1 ] ; then
 rm -rf libretro-${LR_CORE}
 echo "=== libnx - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -129,7 +134,7 @@ fi
 # MSVC2017 x86 desktop
 rm -rf libretro-${LR_CORE}
 echo "=== MSVC2017 x86 desktop - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -141,7 +146,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_x86_desktop.log
 # MSVC2017 x64 desktop
 rm -rf libretro-${LR_CORE}
 echo "=== MSVC2017 x64 desktop - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -153,7 +158,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_x64_desktop.log
 # MSVC2017 x86 UWP
 rm -rf libretro-${LR_CORE}
 echo "=== MSVC2017 x86 UWP - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -165,7 +170,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_x86_uwp.log
 # MSVC2017 x64 UWP
 rm -rf libretro-${LR_CORE}
 echo "=== MSVC2017 x64 UWP - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -177,7 +182,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_x64_uwp.log
 # MSVC2017 ARM UWP
 rm -rf libretro-${LR_CORE}
 echo "=== MSVC2017 ARM UWP - build start ==="
-if [ ${SRCFETCH} = 1 ] ; then
+if [ ${LR_SRC_FETCH} = 1 ] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
@@ -190,7 +195,7 @@ mv log/${LR_CORE}.log log/${LR_CORE}_msvc2017_arm_uwp.log
 if [ ${BUILD_ANDROID} = 1 ] ; then
 	rm -rf libretro-${LR_CORE}
 	echo "=== android-mk - build start ==="
-	if [ ${SRCFETCH} = 1 ] ; then
+	if [ ${LR_SRC_FETCH} = 1 ] ; then
 	./libretro-fetch.sh ${LR_CORE}
 	else
 	cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
