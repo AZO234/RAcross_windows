@@ -2,6 +2,8 @@
 
 BUILD_PS3=0
 BUILD_DEVKIT=0
+BUILD_XBOX=0
+BUILD_XBOX360=0
 BUILD_ANDROID=0
 
 LR_CORE=np2kai
@@ -129,6 +131,34 @@ fi
 ./libretro-build-libnx.sh ${LR_CORE}
 echo "=== libnx - build end ==="
 mv log/${LR_CORE}.log log/${LR_CORE}_libnx.log
+fi
+
+# Xbox
+if [ ${BUILD_XBOX} = 1 ] ; then
+rm -rf libretro-${LR_CORE}
+echo "=== Xbox - build start ==="
+if [ ${LR_SRC_FETCH} = 1 ] ; then
+./libretro-fetch.sh ${LR_CORE}
+else
+cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
+fi
+./libretro-build-xdk1.sh ${LR_CORE}
+echo "=== Xbox - build end ==="
+mv log/${LR_CORE}.log log/${LR_CORE}_xdk1.log
+fi
+
+# Xbox 360
+if [ ${BUILD_XBOX360} = 1 ] ; then
+rm -rf libretro-${LR_CORE}
+echo "=== Xbox 360 - build start ==="
+if [ ${LR_SRC_FETCH} = 1 ] ; then
+./libretro-fetch.sh ${LR_CORE}
+else
+cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
+fi
+./libretro-build-xdk360.sh ${LR_CORE}
+echo "=== Xbox 360 - build end ==="
+mv log/${LR_CORE}.log log/${LR_CORE}_xdk360.log
 fi
 
 # MSVC2017 x86 desktop

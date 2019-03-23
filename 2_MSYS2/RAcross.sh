@@ -32,7 +32,7 @@ fi
 # MinGW
 if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
 	export PATH=$PATH:/c/MinGW/bin
-	echo "export PATH=\$PATH::/c/MinGW/bin" >> ${RACROSS_INITSCRIPT}
+	echo "export PATH=\$PATH:/c/MinGW/bin" >> ${RACROSS_INITSCRIPT}
 fi
 
 # devkitPro
