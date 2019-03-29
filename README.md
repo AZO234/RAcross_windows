@@ -54,7 +54,6 @@ usage
 	1. "Start" -> "MSYS2 64bit" -> "Msys2 MinGW 32bit"
 	2. locate your core source at /home/USER/ (C:\msys64\home\USER\)
 	3. edit libretro-super/build-core.sh, LR_CORE and LR_CORE_SRC value
-	4. cd libretro-super
-	5. ./build-core.sh
-	6. build logs are output in log dir
+	4. right-click ~/libretro-super/build-core.ps1 -> Run with PowerShell
+	5. build logs are output in log dir
 

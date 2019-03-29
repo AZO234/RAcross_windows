@@ -1,11 +1,5 @@
 #!/usr/bin/bash
 
-BUILD_PS3=0
-BUILD_DEVKIT=0
-BUILD_XBOX=0
-BUILD_XBOX360=0
-BUILD_ANDROID=0
-
 LR_CORE=np2kai
 LR_CORE_SRC=~/NP2kai
 
@@ -234,6 +228,20 @@ if [ ${BUILD_ANDROID} = 1 ] ; then
 	./libretro-build-android-mk.sh ${LR_CORE}
 	echo "=== android-mk - build end ==="
 	mv log/${LR_CORE}.log log/${LR_CORE}_android.log
+fi
+
+# Emscripten
+if [ ${BUILD_EMSCRIPTEN} = 1 ] ; then
+	rm -rf libretro-${LR_CORE}
+	echo "=== Emscripten - build start ==="
+	if [ ${LR_SRC_FETCH} = 1 ] ; then
+	./libretro-fetch.sh ${LR_CORE}
+	else
+	cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
+	fi
+	./libretro-build-emscripten.sh ${LR_CORE}
+	echo "=== Emscripten - build end ==="
+	mv log/${LR_CORE}.log log/${LR_CORE}_emscripten.log
 fi
 
 unset CC

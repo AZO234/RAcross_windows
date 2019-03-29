@@ -126,6 +126,7 @@ fi
 # build scripts
 if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
 	cp ${RACROSS_BASE}/build-core.sh ~/libretro-super
+	cp ${RACROSS_BASE}/build-core.ps1 ~/libretro-super
 fi
 
 # delete RAcross installer

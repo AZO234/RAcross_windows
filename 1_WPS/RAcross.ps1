@@ -1,3 +1,5 @@
+$SETUP_EMSCRIPTEN=1
+
 $RACROSS_BASE = "C:\RAcross_windows"
 $RACROSS_WPS_BASE = "$RACROSS_BASE\1_WPS"
 
@@ -77,6 +79,38 @@ if($env:RACROSS_SETUP_CACHE -eq 1) {
 if($env:RACROSS_SETUP_INSTALL -eq 1) {
 	"setup MinGW ..."
 	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\mingw-get-setup.exe" -Wait
+}
+
+# Emscripten
+sl_wps_base
+if($SETUP_EMSCRIPTEN -eq 1) {
+	if($env:RACROSS_SETUP_CACHE -eq 1) {
+		"downloading python ..."
+		$cli.DownloadFile("https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64.exe", "$RACROSS_WPS_CACHEBASE\python-3-amd64.exe")
+	}
+	if($env:RACROSS_SETUP_INSTALL -eq 1) {
+		"setup python ..."
+		Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\python-3-amd64.exe" -ArgumentList "/passive" -Wait
+		$oldSystemPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
+		$oldSystemPath += ";" + [Environment]::GetFolderPath('LocalApplicationData') + "\Programs\Python\Python37"
+		[System.Environment]::SetEnvironmentVariable("Path", $oldSystemPath, "User")
+		$env:Path = $oldSystemPath
+	}
+	if($env:RACROSS_SETUP_CACHE -eq 1) {
+		"downloading Emscripten ..."
+		$cli.DownloadFile("https://github.com/emscripten-core/emsdk/archive/master.zip", "$RACROSS_WPS_CACHEBASE\emsdk.zip")
+	}
+	if($env:RACROSS_SETUP_INSTALL -eq 1) {
+		"setup Emscripten ..."
+		Expand-Archive -Path $RACROSS_WPS_CACHEBASE\emsdk.zip
+		Move-Item "emsdk\emsdk-master" .
+		Remove-Item "emsdk"
+		$user_emsdk = [Environment]::GetFolderPath('LocalApplicationData') + "\emsdk"
+		Move-Item "emsdk-master" $user_emsdk
+		Set-Location $user_emsdk
+		Start-Process -FilePath "emsdk" -ArgumentList "install latest" -Wait
+		Start-Process -FilePath "emsdk" -ArgumentList "activate latest" -Wait
+	}
 }
 
 # copy MSYS2 files

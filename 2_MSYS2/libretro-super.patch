@@ -1,4 +1,24 @@
-バイナリーファイル libretro-super/.git/index とlibretro-super_/.git/index は異なります
+diff -uprN libretro-super/libretro-build-emscripten.sh libretro-super_/libretro-build-emscripten.sh
+--- libretro-super/libretro-build-emscripten.sh	1970-01-01 09:00:00.000000000 +0900
++++ libretro-super_/libretro-build-emscripten.sh	2019-03-12 12:55:41.840399000 +0900
+@@ -0,0 +1,17 @@
++#! /usr/bin/env bash
++# vim: set ts=3 sw=3 noet ft=sh : bash
++
++SCRIPT="${0#./}"
++BASE_DIR="${SCRIPT%/*}"
++WORKDIR="$PWD"
++
++if [ "$BASE_DIR" = "$SCRIPT" ]; then
++	BASE_DIR="$WORKDIR"
++else
++	if [[ "$0" != /* ]]; then
++		# Make the path absolute
++		BASE_DIR="$WORKDIR/$BASE_DIR"
++	fi
++fi
++
++platform=emscripten ${BASE_DIR}/libretro-build.sh $@
 diff -uprN libretro-super/libretro-build-android-mk.sh libretro-super_/libretro-build-android-mk.sh
 --- libretro-super/libretro-build-android-mk.sh	2019-03-20 13:41:48.496938572 +0900
 +++ libretro-super_/libretro-build-android-mk.sh	2019-03-20 18:29:41.834818000 +0900
