@@ -22,17 +22,11 @@ export RACROSS_INITSCRIPT=~/.bashrc
 cd ~/RAcross
 
 if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
-	pacman -S --noconfirm git make unzip patch
+	pacman -S --noconfirm git make unzip patch mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
 elif [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm git patch
-	pacman -Sw --noconfirm make unzip
-fi
-
-# MinGW
-if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
-	export PATH=$PATH:/c/MinGW/bin
-	echo "export PATH=\$PATH:/c/MinGW/bin" >> ${RACROSS_INITSCRIPT}
+	pacman -Sw --noconfirm make unzip mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
 fi
 
 # devkitPro

@@ -1,5 +1,0 @@
-First do command
-
-Set-ExecutionPolicy RemoteSigned
-
-on PowerShell with administrator.

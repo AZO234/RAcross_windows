@@ -1,9 +1,7 @@
 powercfg.exe -x -monitor-timeout-ac 0
-powercfg.exe -x -monitor-timeout-dc 0
 powercfg.exe -x -standby-timeout-ac 0
-powercfg.exe -x -standby-timeout-dc 0
 powercfg.exe -x -hibernate-timeout-ac 0
-powercfg.exe -x -hibernate-timeout-dc 0
 
-powershell -File RAcross.ps1
+cd C:\RAcross_windows\1_WPS
+powershell -WorkingDirectory ~ -ExecutionPolicy RemoteSigned -File .\RAcross.ps1
 

@@ -41,14 +41,19 @@ if($env:RACROSS_SETUP_CACHE -eq 1) {
 # VisualStudio 2017 community
 sl_wps_base
 if($env:RACROSS_SETUP_CACHE -eq 1) {
+	if([String]::IsNullOrEmpty($env:RACROSS_LANG)) {
+		$env:RACROSS_LANG = "En-us"
+	}
 	"downloading vs_community.exe ..."
 	$cli.DownloadFile("https://download.visualstudio.microsoft.com/download/pr/41217ce6-f73c-48b9-b679-e5193984336b/500a2965365fa0283c3c31e4837487d9/vs_community.exe", "$RACROSS_WPS_CACHEBASE\vs_community.exe")
 	"downloading vs_community cache ..."
-	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\vs_community.exe" -ArgumentList "--quiet --layout $RACROSS_WPS_CACHEBASE\vs2017layout --add Microsoft.Component.MSBuild --add Microsoft.VisualStudio.Component.Roslyn.Compiler --add Microsoft.VisualStudio.Component.TextTemplating --add Microsoft.VisualStudio.Component.VC.CoreIde --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core --add Microsoft.VisualStudio.Component.Debugger.JustInTime --add Microsoft.Net.Component.4.7.2.SDK --add Microsoft.VisualStudio.Component.Static.Analysis.Tools --add Microsoft.VisualStudio.Component.Windows10SDK.17134 --add Microsoft.VisualStudio.Component.VC.ATL --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATLMFC --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Modules.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.16299.UWP.Native --add Microsoft.VisualStudio.Component.Windows81SDK --add Microsoft.VisualStudio.Component.WinXP --add Microsoft.VisualStudio.Component.VC.Tools.ARM --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.VisualStudio.Component.UWP.VC.ARM64 --includeRecommended --lang En-us" -Wait
+	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\vs_community.exe" -ArgumentList "--quiet --layout $RACROSS_WPS_CACHEBASE\vs2017layout --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop -add Microsoft.VisualStudio.Workload.Universal
+ --add Microsoft.VisualStudio.Component.VC.ATL --add Microsoft.VisualStudio.Component.VC.MFC.ARM --add Microsoft.VisualStudio.Component.VC.MFC.ARM64 --add Microsoft.VisualStudio.Component.VC.ATL.ARM --add Microsoft.VisualStudio.Component.VC.ATL.ARM64 --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATLMFC --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Modules.x86.x64 --add Microsoft.VisualStudio.ComponentGroup.UWP.VC --add Microsoft.VisualStudio.Component.WinXP --add Microsoft.VisualStudio.Component.VC.Tools.ARM --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.VisualStudio.Component.UWP.VC.ARM64 --includeRecommended --lang En-us" -Wait
 }
 if($env:RACROSS_SETUP_INSTALL -eq 1) {
 	"setup vs_community ..."
-	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\vs2017layout\vs_community.exe" -ArgumentList "--quiet --add Microsoft.Component.MSBuild --add Microsoft.VisualStudio.Component.Roslyn.Compiler --add Microsoft.VisualStudio.Component.TextTemplating --add Microsoft.VisualStudio.Component.VC.CoreIde --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core --add Microsoft.VisualStudio.Component.Debugger.JustInTime --add Microsoft.Net.Component.4.7.2.SDK --add Microsoft.VisualStudio.Component.Static.Analysis.Tools --add Microsoft.VisualStudio.Component.Windows10SDK.17134 --add Microsoft.VisualStudio.Component.VC.ATL --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATLMFC --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Modules.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.16299.UWP.Native --add Microsoft.VisualStudio.Component.Windows81SDK --add Microsoft.VisualStudio.Component.WinXP --add Microsoft.VisualStudio.Component.VC.Tools.ARM --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.VisualStudio.Component.UWP.VC.ARM64 --includeRecommended" -Wait
+	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\vs2017layout\vs_community.exe" -ArgumentList "--quiet --add Microsoft.Component.MSBuild --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NativeDesktop -add Microsoft.VisualStudio.Workload.Universal
+ --add Microsoft.VisualStudio.Component.VC.ATL --add Microsoft.VisualStudio.Component.VC.MFC.ARM --add Microsoft.VisualStudio.Component.VC.MFC.ARM64 --add Microsoft.VisualStudio.Component.VC.ATL.ARM --add Microsoft.VisualStudio.Component.VC.ATL.ARM64 --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.ATLMFC --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Modules.x86.x64 --add Microsoft.VisualStudio.ComponentGroup.UWP.VC --add Microsoft.VisualStudio.Component.WinXP --add Microsoft.VisualStudio.Component.VC.Tools.ARM --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.VisualStudio.Component.UWP.VC.ARM64 --includeRecommended" -Wait
 }
 
 # MSYS2 64bit
@@ -59,24 +64,13 @@ if(Test-Path "C:\msys64") {
 }
 if($env:RACROSS_SETUP_CACHE -eq 1) {
 	"downloading MSYS2 ..."
-	$cli.DownloadFile("http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20180531.exe", "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe")
+	$cli.DownloadFile("http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20190524.exe", "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe")
 #	$cli.DownloadFile("https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js", "$RACROSS_WPS_CACHEBASE\auto-install.js")
 }
 if($MSYS_INSTALLED -eq 0) {
 	"setup MSYS2 ..."
 	#Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -ArgumentList "--platform minimal --script $RACROSS_WPS_CACHEBASE\auto-install.js -v" -Wait
 	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -Wait
-}
-
-# MinGW
-sl_wps_base
-if($env:RACROSS_SETUP_CACHE -eq 1) {
-	"downloading MinGW ..."
-	$cli.DownloadFile("https://osdn.net/frs/redir.php?m=iij&f=mingw%2F68260%2Fmingw-get-setup.exe", "$RACROSS_WPS_CACHEBASE\mingw-get-setup.exe")
-}
-if($env:RACROSS_SETUP_INSTALL -eq 1) {
-	"setup MinGW ..."
-	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\mingw-get-setup.exe" -Wait
 }
 
 # copy MSYS2 files
@@ -86,7 +80,7 @@ if($MSYS_INSTALLED -eq 0) {
 	Copy-Item -Path "$RACROSS_BASE\2_MSYS2" -Destination "C:\msys64\home\$env:USERNAME\RAcross" -Recurse
 	# 1st start MSYS2
 	"update MSYS2 ..."
-	Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw32 -c `"pacman -Syu --noconfirm`"" -Wait
+	Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw64 -c `"pacman -Syu --noconfirm`"" -Wait
 }
 
 # delete RAcross installer
@@ -97,5 +91,5 @@ if($env:RACROSS_SETUP_DELETE -eq 1) {
 
 # 2nd start MSYS2
 "setup MSYS2 env ..."
-Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw32 -c `"RAcross/RAcross.sh`"" -Wait
+Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw64 -c `"RAcross/RAcross.sh`"" -Wait
 
