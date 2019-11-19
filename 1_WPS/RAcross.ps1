@@ -38,6 +38,9 @@ if($env:RACROSS_SETUP_CACHE -eq 1) {
 	New-Item "$RACROSS_WPS_CACHEBASE" -ItemType Directory
 }
 
+# Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
 # VisualStudio 2017 community
 sl_wps_base
 if($env:RACROSS_SETUP_CACHE -eq 1) {
@@ -61,25 +64,16 @@ $MSYS_INSTALLED = 0
 if(Test-Path "C:\msys64") {
 	$MSYS_INSTALLED = 1
 }
-if($env:RACROSS_SETUP_CACHE -eq 1) {
-	"downloading MSYS2 ..."
-	$cli.DownloadFile("http://repo.msys2.org/distrib/x86_64/msys2-x86_64-20190524.exe", "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe")
-#	$cli.DownloadFile("https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js", "$RACROSS_WPS_CACHEBASE\auto-install.js")
-}
 if($MSYS_INSTALLED -eq 0) {
 	"setup MSYS2 ..."
-	#Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -ArgumentList "--platform minimal --script $RACROSS_WPS_CACHEBASE\auto-install.js -v" -Wait
-	Start-Process -FilePath "$RACROSS_WPS_CACHEBASE\msys2-x86_64.exe" -Wait
+	Start-Process -FilePath "choco" -ArgumentList "install -y msys2" -Wait
 }
 
 # copy MSYS2 files
 sl_wps_base
 if($MSYS_INSTALLED -eq 0) {
 	"copy MSYS2 files ..."
-	Copy-Item -Path "$RACROSS_BASE\2_MSYS2" -Destination "C:\msys64\home\$env:USERNAME\RAcross" -Recurse
-	# 1st start MSYS2
-	"update MSYS2 ..."
-	Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw64 -c `"pacman -Syu --noconfirm`"" -Wait
+	Copy-Item -Path "$RACROSS_BASE\2_MSYS2" -Destination "C:\tools\msys64\home\$env:USERNAME\RAcross" -Recurse
 }
 
 # delete RAcross installer
@@ -90,5 +84,5 @@ if($env:RACROSS_SETUP_DELETE -eq 1) {
 
 # 2nd start MSYS2
 "setup MSYS2 env ..."
-Start-Process -FilePath "C:\msys64\msys2_shell.cmd" -ArgumentList "-mingw64 -c `"RAcross/RAcross.sh`"" -Wait
+Start-Process -FilePath "C:\tools\msys64\msys2_shell.cmd" -ArgumentList "-mingw64 -c `"RAcross/RAcross.sh`"" -Wait
 

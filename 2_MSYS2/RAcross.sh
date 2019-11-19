@@ -7,7 +7,7 @@ SETUP_ANDROID=0
 export RACROSS_BASE=${HOME}/RAcross
 
 export RACROSS_CACHE=${RACROSS_BASE}/cache
-if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+if [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
 	echo "*** restructure cache ***"
 	rm -rf ${RACROSS_CACHE}
 	mkdir -p ${RACROSS_CACHE}
@@ -21,16 +21,16 @@ export RACROSS_INITSCRIPT=~/.bashrc
 
 cd ~/RAcross
 
-if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
 	pacman -S --noconfirm git make unzip patch mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
-elif [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+elif [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm git patch
 	pacman -Sw --noconfirm make unzip mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
 fi
 
 # devkitPro
-if [ ${SETUP_DEVKITPRO} = 1 ] ; then
+if [[ ${SETUP_DEVKITPRO} = 1 ]] ; then
 	echo "*** setup devkitPro ***"
 	cd ${RACROSS_BASE}
 	export DEVKITPRO=/opt/devkitpro
@@ -40,7 +40,7 @@ if [ ${SETUP_DEVKITPRO} = 1 ] ; then
 	export PATH=$PATH:$DEVKITPRO/devkitARM/bin
 	export PATH=$PATH:$DEVKITPRO/devkitA64/bin
 	export PATH=$PATH:$DEVKITPRO/devkitPPC/bin
-	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
+	if [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
 		echo "[dkp-libs]" >> /etc/pacman.conf
 		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
 		echo "Server = https://downloads.devkitpro.org/packages" >> /etc/pacman.conf
@@ -52,7 +52,7 @@ if [ ${SETUP_DEVKITPRO} = 1 ] ; then
 		pacman -Syuw --noconfirm
 		pacman -Sw --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
 	fi
-	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
 		echo "export DEVKITPRO=/opt/devkitpro" >> ${RACROSS_INITSCRIPT}
 		echo "export DEVKITARM=\$DEVKITPRO/devkitARM" >> ${RACROSS_INITSCRIPT}
 		echo "export DEVKITA64=\$DEVKITPRO/devkitA64" >> ${RACROSS_INITSCRIPT}
@@ -66,8 +66,8 @@ if [ ${SETUP_DEVKITPRO} = 1 ] ; then
 fi
 
 # PS3
-if [ ${SETUP_PS3} = 1 ] ; then
-	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+if [[ ${SETUP_PS3} = 1 ]] ; then
+	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
 		echo "*** setup PS3 ***"
 		cd ${RACROSS_BASE}
 		unzip PS3_SDK-475_001.zip
@@ -86,44 +86,45 @@ if [ ${SETUP_PS3} = 1 ] ; then
 fi
 
 # Android NDK *.cmd file cannot run*
-if [ ${SETUP_ANDROID} = 1 ] ; then
+if [[ ${SETUP_ANDROID} = 1 ]] ; then
 	echo "*** setup Android NDK ***"
 	cd ${RACROSS_BASE}
 	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
-		wget https://dl.google.com/android/repository/android-ndk-r18b-windows-x86_64.zip -P ${RACROSS_CACHE}
+		wget https://dl.google.com/android/repository/android-ndk-r20-windows-x86_64.zip -P ${RACROSS_CACHE}
 	fi
-	if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
-		unzip ${RACROSS_CACHE}/android-ndk-r18b-windows-x86_64.zip -d ${RACROSS_TOOLS}/
-		export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r18b
-		export PATH=$PATH:${RACROSS_TOOLS}/android-ndk-r18b
-		echo "export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r18b" >> ${RACROSS_INITSCRIPT}
-		echo "export PATH=\$PATH:${RACROSS_TOOLS}/android-ndk-r18b" >> ${RACROSS_INITSCRIPT}
+	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
+		unzip ${RACROSS_CACHE}/android-ndk-r20-windows-x86_64.zip -d ${RACROSS_TOOLS}/
+		export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r20
+		export PATH=$PATH:${RACROSS_TOOLS}/android-ndk-r20
+		echo "export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r20" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:${RACROSS_TOOLS}/android-ndk-r20" >> ${RACROSS_INITSCRIPT}
 	fi
 fi
 
 # libretro-super
 echo "*** setup libretro-super ***"
 cd ~
-if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
-	git clone --depth=1 https://github.com/libretro/libretro-super.git
-	patch -p1 -d libretro-super < ${RACROSS_BASE}/libretro-super.patch
-	chmod +x libretro-super/libretro-build-libnx.sh
+if [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
+	git clone --depth=1 https://github.com/AZO234/libretro-super.git
+	cd libretro-super
+	git checkout AZO_fix
+	cd ..
 	tar zcvf ${RACROSS_CACHE}/libretro-super.tar.gz libretro-super
-	if [ ${RACROSS_SETUP_INSTALL} = 0 ] ; then
+	if [[ ${RACROSS_SETUP_INSTALL} = 0 ]] ; then
 		rm -rf libretro-super
 	fi
 fi
-if [ ${RACROSS_SETUP_CACHE} = 0 ] ; then
+if [[ ${RACROSS_SETUP_CACHE} = 0 ]] ; then
 	tar zxfv ${RACROSS_CACHE}/libretro-super.tar.gz
 fi
 
 # build scripts
-if [ ${RACROSS_SETUP_INSTALL} = 1 ] ; then
+if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
 	cp ${RACROSS_BASE}/build-core.sh ~/libretro-super
 fi
 
 # delete RAcross installer
-if [ ${RACROSS_SETUP_DELETE} = 1 ] ; then
+if [[ ${RACROSS_SETUP_DELETE} = 1 ]] ; then
 	rm -rf ${RACROSS_BASE}
 fi
 
