@@ -22,19 +22,16 @@ install
 	2. C:\Racross_windows\1_WPS\setup.bat right click -> open as administrator
 
 		- (sleep/standby/hibernate is disabled)
+		- Chocolatey
 		- Visual Studio 2017 Community
+		- MSYS2
 
-	3. MSYS2 64bit setup window displaied
-
-		- All default click "Next"
-		- final dialog, check clear "run MSYS2 64bit" then "Finish"
-
-	5. MSYS2 shell opened and setuped
+	3. MSYS2 shell opened and setuped
 
 		- package update
 		- packages
 
-	6. "RAcross setup is finished." displaied then keydown and close PowerShell
+	4. "RAcross setup is finished." displaied then keydown and close PowerShell
 
 usage
 -----
