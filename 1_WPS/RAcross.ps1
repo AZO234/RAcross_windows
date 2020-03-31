@@ -78,7 +78,6 @@ if($MSYS_INSTALLED -eq 0) {
 
 # delete RAcross installer
 if($env:RACROSS_SETUP_DELETE -eq 1) {
-#	Remove-Item "$RACROSS_BASE" -Recurse -Force
 	Remove-Item "$RACROSS_BASE\*" -Recurse -Force
 }
 
