@@ -58,6 +58,7 @@ if [[ ${SETUP_DEVKITPRO} = 1 ]] ; then
 		pacman -U --noconfirm ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
 		pacman -Syuw --noconfirm
 		pacman -Sw --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
+		patch ${DEVKITA64}/base_tools < ${RACROSS_BASE}/devkitA64_base_tools.patch
 	fi
 	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
 		echo "export DEVKITPRO=/opt/devkitpro" >> ${RACROSS_INITSCRIPT}
