@@ -32,17 +32,13 @@ Set-Location "$RACROSS_WPS_BASE"
 }
 
 $cli = New-Object System.Net.WebClient
+$WsShell = New-Object -ComObject WScript.Shell
 
 if($env:RACROSS_SETUP_CACHE -eq 1) {
 	"restructure cache ..."
 	Remove-Item "$RACROSS_WPS_CACHEBASE" -Recurse -Force
 	New-Item "$RACROSS_WPS_CACHEBASE" -ItemType Directory
 }
-
-# Windows update
-if(-not (Test-Path C:\WindowsUpdate)) { md C:\WindowsUpdate }
-Invoke-WebRequest https://raw.githubusercontent.com/MuraAtVwnet/WindowsUpdate/master/AutoWindowsUpdate.ps1 -OutFile C:\WindowsUpdate\AutoWindowsUpdate.ps1
-C:\WindowsUpdate\AutoWindowsUpdate.ps1 full
 
 # Chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
@@ -90,16 +86,28 @@ if($MSYS_INSTALLED -eq 0) {
 sl_wps_base
 "setup Notepad++ ..."
 Start-Process -FilePath "choco" -ArgumentList "install -y notepadplusplus" -Wait
+$Shortcut = $WsShell.CreateShortcut($RACROSS_DESKTOP + "\Notepad++.lnk")
+$Shortcut.TargetPath = ([Environment]::GetFolderPath('ProgramFiles') + "\Notepad++\notepad++.exe")
+$Shortcut.IconLocation = ([Environment]::GetFolderPath('ProgramFiles') + "\Notepad++\notepad++.exe")
+$Shortcut.Save()
 
 # WinMerge
 sl_wps_base
 "setup WinMerge ..."
 Start-Process -FilePath "choco" -ArgumentList "install -y winmerge" -Wait
+$Shortcut = $WsShell.CreateShortcut($RACROSS_DESKTOP + "\WinMerge.lnk")
+$Shortcut.TargetPath = ([Environment]::GetFolderPath('ProgramFiles') + "\WinMerge\WinMergeU.exe")
+$Shortcut.IconLocation = ([Environment]::GetFolderPath('ProgramFiles') + "\WinMerge\WinMergeU.exe")
+$Shortcut.Save()
 
 # RetroArch
 sl_wps_base
 "setup RetroArch ..."
 Start-Process -FilePath "choco" -ArgumentList "install -y retroarch" -Wait
+$Shortcut = $WsShell.CreateShortcut($RACROSS_DESKTOP + "\RetroArch.lnk")
+$Shortcut.TargetPath = ("C:\tools\retroarch\retroarch.exe")
+$Shortcut.IconLocation = ("C:\tools\retroarch\retroarch.exe")
+$Shortcut.Save()
 
 # delete RAcross installer
 if($env:RACROSS_SETUP_DELETE -eq 1) {
