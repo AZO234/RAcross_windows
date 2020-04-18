@@ -40,9 +40,6 @@ if($env:RACROSS_SETUP_CACHE -eq 1) {
 	New-Item "$RACROSS_WPS_CACHEBASE" -ItemType Directory
 }
 
-# Chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
 # VisualStudio 2017 community
 sl_wps_base
 if($env:RACROSS_SETUP_CACHE -eq 1) {
