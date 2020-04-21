@@ -24,17 +24,41 @@ unset CXX
 unset AR
 unset LD
 
-# host(windows x86_64)
+# MinGW x86_64
 rm -rf libretro-${LR_CORE}
-echo "=== host - build start ==="
+echo "=== MinGW x86_64 - build start ==="
 if [[ ${LR_SRC_FETCH} = 1 ]] ; then
 ./libretro-fetch.sh ${LR_CORE}
 else
 cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
 fi
 ./libretro-build.sh ${LR_CORE}
-echo "=== host - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_host.log
+echo "=== MinGW x86_64 - build end ==="
+mv log/${LR_CORE}.log log/${LR_CORE}_mingw64.log
+mv dist/win_x64 dist/mingw64
+
+CC=i686-w64-mingw32-gcc
+CXX=i686-w64-mingw32-g++
+AR=i686-w64-mingw32-gcc-ar
+LD=${CXX}
+
+# MinGW i686
+rm -rf libretro-${LR_CORE}
+echo "=== MinGW i686 - build start ==="
+if [[ ${LR_SRC_FETCH} = 1 ]] ; then
+./libretro-fetch.sh ${LR_CORE}
+else
+cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
+fi
+./libretro-build.sh ${LR_CORE}
+echo "=== MinGW i686 - build end ==="
+mv log/${LR_CORE}.log log/${LR_CORE}_mingw32.log
+mv dist/win_64 dist/mingw32
+
+unset CC
+unset CXX
+unset AR
+unset LD
 
 # PS3
 if [[ ${BUILD_PS3} = 1 ]] ; then
