@@ -53,7 +53,7 @@ fi
 ./libretro-build.sh ${LR_CORE}
 echo "=== MinGW i686 - build end ==="
 mv log/${LR_CORE}.log log/${LR_CORE}_mingw32.log
-mv dist/win_64 dist/mingw32
+mv dist/win_x64 dist/mingw32
 
 unset CC
 unset CXX
