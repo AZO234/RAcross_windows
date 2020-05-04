@@ -8,11 +8,9 @@ RAcross is libretro(RA?)'s core cross build emvironment.
 RAcross_windows can test follow cross builds
 
 	- host
-	- MSVC2017 x86 desktop
-	- MSVC2017 x64 desktop
-	- MSVC2017 x86 UWP
-	- MSVC2017 x64 UWP
-	- MSVC2017 ARM UWP
+	- MSVC2019 x86&x64 desktop
+	- MSVC2019 x86&x64 UWP
+	- MSVC2019 ARM&ARM64 UWP
 
 install
 -------
@@ -24,9 +22,8 @@ install
 		- (sleep/standby/hibernate is disabled)
 		- PowerShell
 		- Chocolatey
-		- Visual Studio 2017 Community
-		- vcpkg
-		- Ninja
+		- Visual Studio 2019 Community
+		- WDK for Windows 10
 		- MSYS2
 
 	3. MSYS2 shell opened and setuped
