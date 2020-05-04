@@ -24,11 +24,11 @@ export RACROSS_INITSCRIPT=~/.bashrc
 cd ~/RAcross
 
 if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
-	pacman -S --noconfirm git cmake make unzip patch mingw-w64-x86_64-toolchain mingw-w64-i686-toolchain mingw-w64-i686-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
+	pacman -S --noconfirm git cmake ninja make unzip patch mingw-w64-x86_64-toolchain mingw-w64-i686-toolchain mingw-w64-i686-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
 elif [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm git patch
-	pacman -Sw --noconfirm cmake make unzip mingw-w64-x86_64-toolchain mingw-w64-i686-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
+	pacman -Sw --noconfirm cmake ninja make unzip mingw-w64-x86_64-toolchain mingw-w64-i686-toolchain mingw-w64-x86_64-pkg-config mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-freetype mingw-w64-x86_64-python3 mingw-w64-x86_64-ffmpeg
 fi
 
 if [[ ${RACROSS_SETUP_GIT} = 1 ]] ; then
