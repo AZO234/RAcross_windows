@@ -55,7 +55,7 @@ if($env:RACROSS_SETUP_CACHE -eq 1) {
 }
 
 # vcpkg
-Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw32\bin\git" -ArgumentList "clone https://github.com/Microsoft/vcpkg C:\vcpkg" -Wait
+Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw32\bin\git" -ArgumentList "clone https://github.com/Microsoft/vcpkg C:\vcpkg" -Wait
 cd C:\vcpkg
 .\bootstrap-vcpkg.bat
 .\vcpkg integrate install

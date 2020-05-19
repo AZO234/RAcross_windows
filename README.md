@@ -24,6 +24,8 @@ install
 		- Chocolatey
 		- Visual Studio 2019 Community
 		- WDK for Windows 10
+		- vcpkg
+		- Ninja
 		- MSYS2
 
 	3. MSYS2 shell opened and setuped
