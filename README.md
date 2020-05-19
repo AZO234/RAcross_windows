@@ -22,8 +22,11 @@ install
 	2. C:\Racross_windows\1_WPS\setup.bat right click -> open as administrator
 
 		- (sleep/standby/hibernate is disabled)
+		- PowerShell
 		- Chocolatey
 		- Visual Studio 2017 Community
+		- vcpkg
+		- Ninja
 		- MSYS2
 
 	3. MSYS2 shell opened and setuped

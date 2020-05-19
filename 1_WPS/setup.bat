@@ -8,9 +8,6 @@ rem chocolatey
 rem PowerShell Core
 choco install -y powershell-core
 
-rem Add "Run as administrator" for .ps1 file
-reg import "Windows_AddPS1RunAsAdministratorByPS7.reg"
-
 rem Run powershell script
 cd C:\RAcross_windows\1_WPS
 "C:\Program Files\PowerShell\7\pwsh.exe" -WorkingDirectory ~ -ExecutionPolicy RemoteSigned -File .\RAcross.ps1
