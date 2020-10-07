@@ -98,14 +98,14 @@ if [[ ${SETUP_ANDROID} = 1 ]] ; then
 	echo "*** setup Android NDK ***"
 	cd ${RACROSS_BASE}
 	if [ ${RACROSS_SETUP_CACHE} = 1 ] ; then
-		wget https://dl.google.com/android/repository/android-ndk-r21-windows-x86_64.zip -P ${RACROSS_CACHE}
+		wget https://dl.google.com/android/repository/android-ndk-r21b-windows-x86_64.zip -P ${RACROSS_CACHE}
 	fi
 	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
-		unzip ${RACROSS_CACHE}/android-ndk-r21-windows-x86_64.zip -d ${RACROSS_TOOLS}/
-		export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r21
-		export PATH=$PATH:${RACROSS_TOOLS}/android-ndk-r21
-		echo "export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r21" >> ${RACROSS_INITSCRIPT}
-		echo "export PATH=\$PATH:${RACROSS_TOOLS}/android-ndk-r21" >> ${RACROSS_INITSCRIPT}
+		unzip ${RACROSS_CACHE}/android-ndk-r21b-windows-x86_64.zip -d ${RACROSS_TOOLS}/
+		export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r21b
+		export PATH=$PATH:${RACROSS_TOOLS}/android-ndk-r21b
+		echo "export NDK_ROOT_DIR=${RACROSS_TOOLS}/android-ndk-r21b" >> ${RACROSS_INITSCRIPT}
+		echo "export PATH=\$PATH:${RACROSS_TOOLS}/android-ndk-r21b" >> ${RACROSS_INITSCRIPT}
 	fi
 fi
 
