@@ -6,6 +6,11 @@ SETUP_ANDROID=1
 
 RACROSS_SETUP_GIT=0
 
+if [[ ${RACROSS_SETUP_GIT} = 1 ]] ; then
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+fi
+
 export RACROSS_BASE=${HOME}/RAcross
 
 export RACROSS_CACHE=${RACROSS_BASE}/cache

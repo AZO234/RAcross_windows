@@ -1,25 +1,16 @@
 $RACROSS_BASE = "C:\RAcross_windows"
 $RACROSS_WPS_BASE = "$RACROSS_BASE\1_WPS"
 
-# SETUP_TYPE
-# 0:install(after delete cache)
-# 1:install(after cache undelete)
-# 2:cache
-# 3:install from cache(after delete cache)
-# 4:install from cache(after cache undelete)
-# always MSYS2 is installed
-$RACROSS_SETUP_TYPE = 0
-
 $env:RACROSS_SETUP_CACHE = 0
-if(($RACROSS_SETUP_TYPE -eq 0) -or ($RACROSS_SETUP_TYPE -eq 1) -or ($RACROSS_SETUP_TYPE -eq 2)) {
+if(($env:RACROSS_SETUP_TYPE -eq 0) -or ($env:RACROSS_SETUP_TYPE -eq 1) -or ($env:RACROSS_SETUP_TYPE -eq 2)) {
 	$env:RACROSS_SETUP_CACHE = 1
 }
 $env:RACROSS_SETUP_INSTALL = 0
-if($RACROSS_SETUP_TYPE -ne 2) {
+if($env:RACROSS_SETUP_TYPE -ne 2) {
 	$env:RACROSS_SETUP_INSTALL = 1
 }
 $env:RACROSS_SETUP_DELETE = 0
-if(($RACROSS_SETUP_TYPE -eq 0) -or ($RACROSS_SETUP_TYPE -eq 3)) {
+if(($env:RACROSS_SETUP_TYPE -eq 0) -or ($env:RACROSS_SETUP_TYPE -eq 3)) {
 	$env:RACROSS_SETUP_DELETE = 1
 }
 
@@ -55,7 +46,7 @@ if($env:RACROSS_SETUP_INSTALL -eq 1) {
 }
 
 # vcpkg
-git clone https://github.com/Microsoft/vcpkg C:\vcpkg
+Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw32\bin\git" -ArgumentList "clone https://github.com/Microsoft/vcpkg C:\vcpkg" -Wait
 cd C:\vcpkg
 .\bootstrap-vcpkg.bat
 .\vcpkg integrate install

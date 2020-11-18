@@ -3,7 +3,7 @@ RAcross_windows
 
 RAcross is libretro(RA?)'s core cross build emvironment.
 
-	- Use Windows 10 Professional Novemver 2019 update 64bit (Vanilla)
+	- Use Windows 10 Professional October 2020 update 64bit (Vanilla)
 
 RAcross_windows can test follow cross builds
 
