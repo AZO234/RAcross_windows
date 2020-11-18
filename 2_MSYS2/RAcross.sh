@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 SETUP_PS3=0
-SETUP_DEVKITPRO=1
 SETUP_ANDROID=1
 
 RACROSS_SETUP_GIT=0
@@ -39,43 +38,6 @@ fi
 if [[ ${RACROSS_SETUP_GIT} = 1 ]] ; then
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
-fi
-
-# devkitPro
-if [[ ${SETUP_DEVKITPRO} = 1 ]] ; then
-	echo "*** setup devkitPro ***"
-	cd ${RACROSS_BASE}
-	export DEVKITPRO=/opt/devkitpro
-	export DEVKITARM=$DEVKITPRO/devkitARM
-	export DEVKITA64=$DEVKITPRO/devkitA64
-	export DEVKITPPC=$DEVKITPRO/devkitPPC
-	export PATH=$PATH:$DEVKITPRO/devkitARM/bin
-	export PATH=$PATH:$DEVKITPRO/devkitA64/bin
-	export PATH=$PATH:$DEVKITPRO/devkitPPC/bin
-	if [[ ${RACROSS_SETUP_CACHE} = 1 ]] ; then
-		echo "[dkp-libs]" >> /etc/pacman.conf
-		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-		echo "Server = https://downloads.devkitpro.org/packages" >> /etc/pacman.conf
-		echo "[dkp-windows]" >> /etc/pacman.conf
-		echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-		echo "Server = https://downloads.devkitpro.org/packages/windows" >> /etc/pacman.conf
-		wget https://downloads.devkitpro.org/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz -P ${RACROSS_CACHE}
-		pacman -U --noconfirm ${RACROSS_CACHE}/devkitpro-keyring-r1.787e015-2-any.pkg.tar.xz
-		pacman -Syuw --noconfirm
-		pacman -Sw --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
-		patch ${DEVKITA64}/base_tools < ${RACROSS_BASE}/devkitA64_base_tools.patch
-	fi
-	if [[ ${RACROSS_SETUP_INSTALL} = 1 ]] ; then
-		echo "export DEVKITPRO=/opt/devkitpro" >> ${RACROSS_INITSCRIPT}
-		echo "export DEVKITARM=\$DEVKITPRO/devkitARM" >> ${RACROSS_INITSCRIPT}
-		echo "export DEVKITA64=\$DEVKITPRO/devkitA64" >> ${RACROSS_INITSCRIPT}
-		echo "export DEVKITPPC=\$DEVKITPRO/devkitPPC" >> ${RACROSS_INITSCRIPT}
-		echo "export PATH=\$PATH:\$DEVKITPRO/devkitARM/bin" >> ${RACROSS_INITSCRIPT}
-		echo "export PATH=\$PATH:\$DEVKITPRO/devkitA64/bin" >> ${RACROSS_INITSCRIPT}
-		echo "export PATH=\$PATH:\$DEVKITPRO/devkitPPC/bin" >> ${RACROSS_INITSCRIPT}
-		pacman -Syu --noconfirm
-		pacman -S --noconfirm 3ds-dev gamecube-dev wii-dev wiiu-dev switch-dev
-	fi
 fi
 
 # PS3

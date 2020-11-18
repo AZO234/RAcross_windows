@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 BUILD_PS3=0
-BUILD_DEVKIT=1
 BUILD_XBOX=0
 BUILD_XBOX360=0
 BUILD_ANDROID=1
@@ -86,76 +85,6 @@ fi
 ./libretro-build-sncps3.sh ${LR_CORE}
 echo "=== sncps3 - build end ==="
 mv log/${LR_CORE}.log log/${LR_CORE}_sncps3.log
-fi
-
-# CTR
-if [[ ${BUILD_DEVKIT} = 1 ]] ; then
-rm -rf libretro-${LR_CORE}
-echo "=== CTR - build start ==="
-if [[ ${LR_SRC_FETCH} = 1 ]] ; then
-./libretro-fetch.sh ${LR_CORE}
-else
-cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
-fi
-./libretro-build-ctr.sh ${LR_CORE}
-echo "=== CTR - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_ctr.log
-fi
-
-# NGC
-if [[ ${BUILD_DEVKIT} = 1 ]] ; then
-rm -rf libretro-${LR_CORE}
-echo "=== NGC - build start ==="
-if [[ ${LR_SRC_FETCH} = 1 ]] ; then
-./libretro-fetch.sh ${LR_CORE}
-else
-cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
-fi
-./libretro-build-ngc.sh ${LR_CORE}
-echo "=== NGC - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_ngc.log
-fi
-
-# Wii
-if [[ ${BUILD_DEVKIT} = 1 ]] ; then
-rm -rf libretro-${LR_CORE}
-echo "=== Wii - build start ==="
-if [[ ${LR_SRC_FETCH} = 1 ]] ; then
-./libretro-fetch.sh ${LR_CORE}
-else
-cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
-fi
-./libretro-build-wii.sh ${LR_CORE}
-echo "=== Wii - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_wii.log
-fi
-
-# WiiU
-if [[ ${BUILD_DEVKIT} = 1 ]] ; then
-rm -rf libretro-${LR_CORE}
-echo "=== WiiU - build start ==="
-if [[ ${LR_SRC_FETCH} = 1 ]] ; then
-./libretro-fetch.sh ${LR_CORE}
-else
-cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
-fi
-./libretro-build-wiiu.sh ${LR_CORE}
-echo "=== WiiU - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_wiiu.log
-fi
-
-# libnx
-if [[ ${BUILD_DEVKIT} = 1 ]] ; then
-rm -rf libretro-${LR_CORE}
-echo "=== libnx - build start ==="
-if [[ ${LR_SRC_FETCH} = 1 ]] ; then
-./libretro-fetch.sh ${LR_CORE}
-else
-cp -rf ${LR_CORE_SRC} libretro-${LR_CORE}
-fi
-./libretro-build-libnx.sh ${LR_CORE}
-echo "=== libnx - build end ==="
-mv log/${LR_CORE}.log log/${LR_CORE}_libnx.log
 fi
 
 # android-mk
